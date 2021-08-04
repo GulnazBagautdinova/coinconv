@@ -51,5 +51,5 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(res)
+	fmt.Printf("Converting result: %f\n", res)
 }
