@@ -1,0 +1,5 @@
+[apiKey]
+key = "aac8340f-4ae2-4f14-80b0-f11fe74fde51"
+
+[coinmarket]
+url = "https://pro-api.coinmarketcap.com"
