@@ -14,9 +14,11 @@ type Status struct {
 }
 
 type Data struct {
-	Symbol string                            `json:"symbol"`
-	Quote  map[string]map[string]interface{} `json:"quote"`
+	Symbol string                  `json:"symbol"`
+	Quote  map[string]QuoteDetails `json:"quote"`
 }
+
+type QuoteDetails map[string]interface{}
 
 type CoinMarket struct {
 	CoinMarketKey string
