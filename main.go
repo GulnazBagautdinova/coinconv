@@ -6,15 +6,13 @@ import (
 	"os"
 
 	"coinconv/configs"
-	"coinconv/models"
-	"coinconv/processors"
+	"coinconv/converter"
 
 	log "github.com/sirupsen/logrus"
 )
 
 var (
-	configName string
-
+	configName  string
 	amount      string
 	convertFrom string
 	convertTo   string
@@ -44,9 +42,9 @@ func main() {
 	convertFrom = os.Args[2]
 	convertTo = os.Args[3]
 
-	coinMarketVar := models.ToCoinMarket(amount, convertFrom, convertTo, mainConfig)
+	coinMarketService := converter.NewCoinMarketService(mainConfig)
 
-	res, err := processors.Converter(coinMarketVar)
+	res, err := coinMarketService.Convert(amount, convertFrom, convertTo)
 	if err != nil {
 		log.Fatal(err)
 	}
