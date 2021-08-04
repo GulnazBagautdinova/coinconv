@@ -3,7 +3,6 @@ package coinmarket
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -80,8 +79,6 @@ func (cm *coinMarketService) Convert(amount, convertFrom, convertTo string) (res
 		err = errors.New("error reading json")
 		return
 	}
-
-	fmt.Printf("@@@ %#v\n", data)
 
 	if status, ok := data["status"]; ok && status["error_message"] != nil {
 		err = errors.New(status["error_message"].(string))
