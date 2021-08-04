@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"coinconv/configs"
-	"coinconv/converter"
+	"coinconv/services/http/coinmarket"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -42,7 +42,7 @@ func main() {
 	convertFrom = os.Args[2]
 	convertTo = os.Args[3]
 
-	coinMarketService := converter.NewCoinMarketService(mainConfig)
+	coinMarketService := coinmarket.NewCoinMarketService(mainConfig)
 
 	res, err := coinMarketService.Convert(amount, convertFrom, convertTo)
 	if err != nil {

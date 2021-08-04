@@ -1,4 +1,4 @@
-package converter
+package coinmarket
 
 import (
 	"coinconv/configs"

@@ -1,8 +1,9 @@
-package converter
+package coinmarket
 
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -10,7 +11,7 @@ import (
 	"strings"
 
 	"coinconv/configs"
-	"coinconv/models"
+	"coinconv/services/interfaces/converter"
 )
 
 const conversionURL = "/v1/tools/price-conversion"
@@ -27,7 +28,7 @@ type coinMarketService struct {
 }
 
 // NewCoinMarketService return Coin Market service which realize Service interface
-func NewCoinMarketService(opt configs.CoinconvApiOptions) Service {
+func NewCoinMarketService(opt configs.CoinconvApiOptions) converter.Service {
 	return &coinMarketService{
 		httpClient: &http.Client{},
 		apiURL:     opt.URL,
@@ -73,20 +74,23 @@ func (cm *coinMarketService) Convert(amount, convertFrom, convertTo string) (res
 		return
 	}
 
-	var v models.ConversionResult
-	err = json.Unmarshal(respBody, &v)
+	data := make(map[string]map[string]interface{})
+	err = json.Unmarshal(respBody, &data)
 	if err != nil {
 		err = errors.New("error reading json")
 		return
 	}
 
-	if v.ErrorCode != 0 {
-		err = errors.New(v.ErrorMessage)
+	fmt.Printf("@@@ %#v\n", data)
+
+	if status, ok := data["status"]; ok && status["error_message"] != nil {
+		err = errors.New(status["error_message"].(string))
 		return
 	}
 
-	quoteDetails := v.Quote[strings.ToUpper(convertTo)]
-	res = quoteDetails["price"].(float64)
+	quoteDetails := data["data"]["quote"].(map[string]interface{})
+	signDeteils := quoteDetails[strings.ToUpper(convertTo)].(map[string]interface{})
+	res = signDeteils["price"].(float64)
 
 	return
 }
