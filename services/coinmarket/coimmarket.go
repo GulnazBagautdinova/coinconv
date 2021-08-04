@@ -1,12 +1,13 @@
 package coinmarket
 
 import (
-	"coinconv/models"
 	"errors"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
+
+	"coinconv/models"
 )
 
 const conversionURL = "/v1/tools/price-conversion"
@@ -39,8 +40,7 @@ func CoinmarketAPICall(coinMarketVar *models.CoinMarket) (respBody []byte, err e
 	}
 
 	switch resp.StatusCode {
-	case 200:
-	case 400:
+	case 200, 400:
 	case 401:
 		err = APIKeyIsInvalid
 		return
