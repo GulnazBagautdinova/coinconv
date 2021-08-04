@@ -3,6 +3,7 @@ package processors
 import (
 	"encoding/json"
 	"errors"
+	"strings"
 
 	"coinconv/models"
 	"coinconv/services/coinmarket"
@@ -30,6 +31,7 @@ func Converter(coinMarketVar *models.CoinMarket) (res float64, err error) {
 		return
 	}
 
-	res = v.Quote[coinMarketVar.ConvertTo]["price"].(float64)
+	quoteDetails := v.Quote[strings.ToUpper(coinMarketVar.ConvertTo)]
+	res = quoteDetails["price"].(float64)
 	return
 }
