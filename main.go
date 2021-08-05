@@ -2,11 +2,9 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"os"
 
 	"coinconv/configs"
-	"coinconv/services/http/coinmarket"
+	"coinconv/infrastructure"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -34,20 +32,7 @@ func main() {
 	// config
 	mainConfig := configs.NewMainConfig(v)
 
-	if len(os.Args) != 4 {
-		log.Fatalf("Not enough arguments want 4 have: %d", len(os.Args))
-	}
+	marketHandler := infrastructure.NewMarketHandler(mainConfig)
 
-	amount = os.Args[1]
-	convertFrom = os.Args[2]
-	convertTo = os.Args[3]
-
-	coinMarketService := coinmarket.NewCoinMarketService(mainConfig)
-
-	res, err := coinMarketService.Convert(amount, convertFrom, convertTo)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Printf("Converting result: %f\n", res)
+	infrastructure.Dispatch(marketHandler)
 }
