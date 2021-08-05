@@ -14,7 +14,7 @@ import (
 func Dispatch(mh interfaces.MarketHandler) {
 	if len(os.Args) != 4 {
 		log.Infof("Not enough arguments for cmd interface, want 4 have: %d", len(os.Args))
-		os.Exit(0)
+		return
 	}
 
 	input := domain.ConvertInput{
